@@ -1,0 +1,90 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cow Rock Construction - About Us</title>
+    <link rel="icon" type="image/png" href="COWROCK_SECONDARY_BLUE_OUTLINE.png">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .logo {
+            width: 33.333%;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-toggle" id="menuToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <nav class="menu" id="navMenu">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="aboutus.html">About Us</a></li>
+        </ul>
+    </nav>
+    <main class="container">
+        <div class="logo">
+            <img src="COWROCK_PRIMARY_NAVY.png" alt="Cow Rock Construction Logo">
+        </div>
+        <div class="content">
+            <p>At Cow Rock Construction, we proudly uphold a legacy of excellence under the seasoned leadership of Richard Jennings, a fifth-generation builder renowned for his unparalleled commitment to craftsmanship. With a BS in Civil Engineering from NC State University, a master’s degree in Structural Engineering from Georgia Tech, and over 25 years of practical experience in commercial and residential projects across the Southeast, Richard earned his Unlimited NC General Contractors License in 2014. Our team at Cow Rock takes pride in crafting bespoke, ultra-custom homes, seamlessly blending exceptional engineering problem-solving skills with unmatched expertise in the highest-end quality.</p>
+        </div>
+        <div class="photo-section">
+            <img src="RGJIV.jpg" alt="Richard Jennings">
+            <a href="mailto:Richard@CowRock.com">Richard@CowRock.com</a>
+        </div>
+    </main>
+    <footer>
+        © <script>document.write(new Date().getFullYear())</script> Cow Rock Construction. All rights reserved.
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggle = document.querySelector('#menuToggle');
+            const nav = document.querySelector('#navMenu');
+            toggle.addEventListener('click', () => [toggle, nav].forEach(el => el.classList.toggle('active')));
+        });
+    </script>
+</body>
+</html>
