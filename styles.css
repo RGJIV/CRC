@@ -36,10 +36,11 @@ body {
 .logo {
     margin-inline: auto;
     margin-block-start: var(--spacing);
+    text-align: center;
 }
 
 .logo img {
-    max-width: 280px;
+    max-width: 240px;
     width: 100%;
     height: auto;
 }
