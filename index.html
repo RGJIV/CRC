@@ -7,6 +7,36 @@
     <title>Cow Rock Construction</title>
     <link rel="icon" type="image/png" href="COWROCK_SECONDARY_BLUE_OUTLINE.png">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding-bottom: 40px;
+        }
+
+        .main-message {
+            margin-top: 40px;
+        }
+
+        .credentials {
+            margin-top: auto;
+            margin-bottom: 20px;
+        }
+
+        .credentials p {
+            font-size: 0.95em;
+            margin: 4px 0;
+        }
+
+        .cta {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+    </style>
 </head>
 <body>
     <div class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navMenu">
@@ -26,10 +56,19 @@
             <img src="COWROCK_PRIMARY_NAVY.png" alt="Cow Rock Construction Logo">
         </div>
         <div class="content">
-            <p>Cow Rock Construction builds ultra-custom homes that blend natural beauty with unparalleled craftsmanship in the mountains of Cashiers, North Carolina.</p>
-            
-            <p class="tagline">Fifth-generation builder • Structural engineering expertise • Private mountain estates</p>
-            
+            <!-- Main message -->
+            <div class="main-message">
+                <p>Cow Rock Construction builds ultra-custom homes that blend natural beauty with unparalleled craftsmanship in the mountains of Cashiers, North Carolina.</p>
+            </div>
+
+            <!-- Credentials -->
+            <div class="credentials">
+                <p>Fifth-generation builder</p>
+                <p>Structural engineering expertise</p>
+                <p>Private mountain estates</p>
+            </div>
+
+            <!-- CTAs -->
             <div class="cta">
                 <a href="gallery.html" class="btn">View Our Work</a>
                 <a href="mailto:info@CowRock.com" class="btn btn-secondary">Contact Us</a>
@@ -40,10 +79,8 @@
         © <span id="year"></span> Cow Rock Construction. All rights reserved.
     </footer>
     <script>
-        // Set current year
         document.getElementById('year').textContent = new Date().getFullYear();
 
-        // Mobile menu toggle with ARIA support
         const toggle = document.querySelector('#menuToggle');
         const nav = document.querySelector('#navMenu');
 
