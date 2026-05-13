@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Private gallery of select projects by Cow Rock Construction in Cashiers, NC. Most clients prefer not to publish projects publicly.">
     <title>Cow Rock Construction - Gallery</title>
     <link rel="icon" type="image/png" href="COWROCK_SECONDARY_BLUE_OUTLINE.png">
     <link rel="stylesheet" href="styles.css">
@@ -35,7 +36,6 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        /* Simple modal for enlarged view */
         .modal {
             display: none;
             position: fixed;
@@ -74,7 +74,7 @@
     </style>
 </head>
 <body>
-    <div class="menu-toggle" id="menuToggle">
+    <div class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navMenu">
         <span></span>
         <span></span>
         <span></span>
@@ -94,11 +94,11 @@
             <p>Most of our clients prefer not to publish their projects on the Internet. Please make an appointment to visit our projects in person.</p>
         </div>
         <div class="photo-gallery" id="photoGallery">
-            <!-- Images populated dynamically via JavaScript for maintainability -->
+            <!-- Images populated dynamically via JavaScript -->
         </div>
     </main>
     <footer>
-        © <script>document.write(new Date().getFullYear())</script> Cow Rock Construction. All rights reserved.
+        © <span id="year"></span> Cow Rock Construction. All rights reserved.
     </footer>
 
     <!-- Image Modal -->
@@ -110,12 +110,20 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Mobile menu toggle
+            // Set current year
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+            // Mobile menu toggle with ARIA
             const toggle = document.querySelector('#menuToggle');
             const nav = document.querySelector('#navMenu');
-            toggle.addEventListener('click', () => [toggle, nav].forEach(el => el.classList.toggle('active')));
 
-            // Dynamic gallery population - only existing images
+            toggle.addEventListener('click', () => {
+                const isActive = toggle.classList.toggle('active');
+                nav.classList.toggle('active');
+                toggle.setAttribute('aria-expanded', isActive);
+            });
+
+            // Dynamic gallery
             const galleryContainer = document.getElementById('photoGallery');
             const imageFiles = [
                 'CRC001.png', 'CRC002.png', 'CRC003.png', 'CRC004.png', 'CRC005.png',
@@ -126,14 +134,13 @@
                 'CRC116.png'
             ];
 
-            imageFiles.forEach((file, index) => {
+            imageFiles.forEach((file) => {
                 const img = document.createElement('img');
                 img.src = file;
                 img.alt = `Cow Rock Construction project photo ${file.replace('.png', '')}`;
                 img.loading = 'lazy';
                 img.title = `Click to enlarge - ${file}`;
 
-                // Click to open modal
                 img.addEventListener('click', () => {
                     const modal = document.getElementById('imageModal');
                     const modalImg = document.getElementById('modalImage');
@@ -146,19 +153,13 @@
                 galleryContainer.appendChild(img);
             });
 
-            // Modal close functionality
+            // Modal close
             const modal = document.getElementById('imageModal');
             const closeBtn = modal.querySelector('.close');
-            closeBtn.addEventListener('click', () => {
-                modal.style.display = 'none';
-            });
+            closeBtn.addEventListener('click', () => modal.style.display = 'none');
             modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.style.display = 'none';
-                }
+                if (e.target === modal) modal.style.display = 'none';
             });
-
-            // Keyboard escape to close modal
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && modal.style.display === 'block') {
                     modal.style.display = 'none';

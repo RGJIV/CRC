@@ -3,17 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cow Rock Construction builds ultra-custom homes in the mountains of Cashiers, NC. Led by fifth-generation builder Richard Jennings with degrees from NC State and Georgia Tech.">
     <title>Cow Rock Construction - About Us</title>
     <link rel="icon" type="image/png" href="COWROCK_SECONDARY_BLUE_OUTLINE.png">
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .logo {
-            width: 33.333%;
-        }
-    </style>
 </head>
 <body>
-    <div class="menu-toggle" id="menuToggle">
+    <div class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navMenu">
         <span></span>
         <span></span>
         <span></span>
@@ -30,21 +26,32 @@
             <img src="COWROCK_PRIMARY_NAVY.png" alt="Cow Rock Construction Logo">
         </div>
         <div class="content">
-            <p>At Cow Rock Construction, we proudly uphold a legacy of excellence under the seasoned leadership of Richard Jennings, a fifth-generation builder renowned for his unparalleled commitment to craftsmanship. With a BS in Civil Engineering from NC State University, a master’s degree in Structural Engineering from Georgia Tech, and over 25 years of practical experience in commercial and residential projects across the Southeast, Richard earned his Unlimited NC General Contractors License in 2014. Our team at Cow Rock takes pride in crafting bespoke, ultra-custom homes, seamlessly blending exceptional engineering problem-solving skills with unmatched expertise in the highest-end quality.</p>
+            <p>At Cow Rock Construction, we proudly uphold a legacy of excellence under the seasoned leadership of Richard Jennings, a fifth-generation builder renowned for his unparalleled commitment to craftsmanship.</p>
+            
+            <p>With a BS in Civil Engineering from NC State University, a master’s degree in Structural Engineering from Georgia Tech, and over 25 years of practical experience across the Southeast, Richard earned his Unlimited North Carolina General Contractors License in 2014. His deep technical expertise allows us to solve complex engineering challenges while delivering homes of exceptional quality.</p>
+            
+            <p>Our team takes pride in crafting bespoke, ultra-custom homes that seamlessly blend exceptional engineering with the highest standards of craftsmanship — creating timeless residences in the mountains of Western North Carolina.</p>
         </div>
         <div class="photo-section">
-            <img src="RGJIV.jpg" alt="Richard Jennings">
+            <img src="RGJIV.jpg" alt="Richard Jennings, Founder of Cow Rock Construction" loading="lazy">
             <a href="mailto:Richard@CowRock.com">Richard@CowRock.com</a>
         </div>
     </main>
     <footer>
-        © <script>document.write(new Date().getFullYear())</script> Cow Rock Construction. All rights reserved.
+        © <span id="year"></span> Cow Rock Construction. All rights reserved.
     </footer>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const toggle = document.querySelector('#menuToggle');
-            const nav = document.querySelector('#navMenu');
-            toggle.addEventListener('click', () => [toggle, nav].forEach(el => el.classList.toggle('active')));
+        // Set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile menu toggle with ARIA support
+        const toggle = document.querySelector('#menuToggle');
+        const nav = document.querySelector('#navMenu');
+
+        toggle.addEventListener('click', () => {
+            const isActive = toggle.classList.toggle('active');
+            nav.classList.toggle('active');
+            toggle.setAttribute('aria-expanded', isActive);
         });
     </script>
 </body>
