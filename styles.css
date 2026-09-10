@@ -21,7 +21,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: url('ReasonForItAll.png') no-repeat center / cover;
+    background: url('ReasonForItAll.jpg') no-repeat center / cover;
 }
 
 .container {

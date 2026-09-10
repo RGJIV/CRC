@@ -33,8 +33,9 @@ This repository contains the source code for the Cow Rock Construction website. 
 ├── styles.css
 ├── CNAME
 ├── README.md
-├── *.png (logos and background)
-└── CRC001.png – CRC116.png (gallery images)
+├── *.png (logos)
+├── ReasonForItAll.jpg (background)
+└── CRC001.jpg – CRC116.jpg (gallery images)
 ```
 
 ## Recent Improvements
@@ -58,7 +59,7 @@ A `CNAME` file is included for custom domain configuration.
 
 ## Images
 
-- Gallery images follow the naming convention `CRCxxx.png`
+- Gallery images follow the naming convention `CRCxxx.jpg`
 - To add new images: Upload the file and add the filename to the `imageFiles` array in `gallery.html`
 
 ## License

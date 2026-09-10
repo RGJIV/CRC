@@ -122,18 +122,18 @@
             // Dynamic gallery
             const galleryContainer = document.getElementById('photoGallery');
             const imageFiles = [
-                'CRC001.png', 'CRC002.png', 'CRC003.png', 'CRC004.png', 'CRC005.png',
-                'CRC006.png', 'CRC007.png', 'CRC008.png', 'CRC009.png',
-                'CRC101.png', 'CRC102.png', 'CRC103.png', 'CRC104.png', 'CRC105.png',
-                'CRC106.png', 'CRC107.png', 'CRC108.png', 'CRC109.png', 'CRC110.png',
-                'CRC111.png', 'CRC112.png', 'CRC113.png', 'CRC114.png', 'CRC115.png',
-                'CRC116.png'
+                'CRC001.jpg', 'CRC002.jpg', 'CRC003.jpg', 'CRC004.jpg', 'CRC005.jpg',
+                'CRC006.jpg', 'CRC007.jpg', 'CRC008.jpg', 'CRC009.jpg',
+                'CRC101.jpg', 'CRC102.jpg', 'CRC103.jpg', 'CRC104.jpg', 'CRC105.jpg',
+                'CRC106.jpg', 'CRC107.jpg', 'CRC108.jpg', 'CRC109.jpg', 'CRC110.jpg',
+                'CRC111.jpg', 'CRC112.jpg', 'CRC113.jpg', 'CRC114.jpg', 'CRC115.jpg',
+                'CRC116.jpg'
             ];
 
             imageFiles.forEach((file) => {
                 const img = document.createElement('img');
                 img.src = file;
-                img.alt = `Cow Rock Construction project photo ${file.replace('.png', '')}`;
+                img.alt = `Cow Rock Construction project photo ${file.replace('.jpg', '')}`;
                 img.loading = 'lazy';
                 img.title = `Click to enlarge - ${file}`;
 
@@ -143,7 +143,7 @@
                     const caption = document.getElementById('modalCaption');
                     modal.style.display = 'block';
                     modalImg.src = file;
-                    caption.textContent = `Cow Rock Construction - ${file.replace('.png', '')}`;
+                    caption.textContent = `Cow Rock Construction - ${file.replace('.jpg', '')}`;
                 });
 
                 galleryContainer.appendChild(img);
