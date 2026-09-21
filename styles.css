@@ -21,7 +21,10 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-image: url("ReasonForItAll.jpg");
+    background-image: image-set(
+        url("ReasonForItAll.webp") type("image/webp"),
+        url("ReasonForItAll.jpg") type("image/jpeg")
+    );
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
