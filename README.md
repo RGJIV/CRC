@@ -22,6 +22,7 @@ This repository contains the source code for the Cow Rock Construction website. 
 | `index.html`  | Homepage with brand message and clear calls to action |
 | `aboutus.html`| Professional biography of Richard Jennings and the company |
 | `gallery.html`| Private project gallery (25 curated images) |
+| `404.html`    | Branded not-found page |
 
 ## File Structure
 
@@ -30,11 +31,15 @@ This repository contains the source code for the Cow Rock Construction website. 
 ├── index.html
 ├── aboutus.html
 ├── gallery.html
+├── 404.html
 ├── styles.css
+├── robots.txt
+├── sitemap.xml
+├── llms.txt
 ├── CNAME
 ├── README.md
 ├── *.png (logos)
-├── ReasonForItAll.jpg (background)
+├── ReasonForItAll.jpg (background fallback)
 └── CRC001.jpg – CRC116.jpg (gallery images)
 ```
 
@@ -46,6 +51,7 @@ This repository contains the source code for the Cow Rock Construction website. 
 - Added proper spacing and readability improvements
 - Standardized year handling in footer
 - Consistent structure across all pages
+- September 2026: crawl files (`robots.txt`, `sitemap.xml`, `llms.txt`), JSON-LD on the homepage, canonical + Open Graph tags, page-specific visually hidden headings, branded 404, and WebP logo/hero via `image-set` / `<picture>` with original JPG/PNG fallbacks. No phone number on the site.
 
 ## Deployment
 
@@ -61,6 +67,7 @@ A `CNAME` file is included for custom domain configuration.
 
 - Gallery images follow the naming convention `CRCxxx.jpg`
 - To add new images: Upload the file and add the filename to the `imageFiles` array in `gallery.html`
+- Master logo: `COWROCK_PRIMARY_NAVY.png`. Master hero: `ReasonForItAll.jpg`. Optimized WebP copies are embedded so supporting browsers do not download the masters.
 
 ## License
 
