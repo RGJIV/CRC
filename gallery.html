@@ -47,29 +47,56 @@
             top: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
+            overflow: hidden;
             background-color: rgba(0,0,0,0.9);
         }
         .modal-content {
             margin: auto;
             display: block;
-            max-width: 90%;
-            max-height: 90%;
+            max-width: 80%;
+            max-height: 82vh;
             margin-top: 5%;
+            object-fit: contain;
         }
         .close {
             position: absolute;
-            top: 20px;
-            right: 35px;
+            top: 16px;
+            right: 24px;
             color: #fff;
             font-size: 40px;
             font-weight: bold;
             cursor: pointer;
+            line-height: 1;
+            z-index: 1002;
         }
+        .close:hover,
+        .modal-nav:hover {
+            color: #ddd;
+        }
+        .modal-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: 0;
+            color: #fff;
+            font-size: 56px;
+            line-height: 1;
+            cursor: pointer;
+            padding: 12px 18px;
+            z-index: 1002;
+            user-select: none;
+        }
+        .modal-nav.prev { left: 8px; }
+        .modal-nav.next { right: 8px; }
         .modal-caption {
             text-align: center;
             color: #ccc;
             padding: 10px;
+        }
+        @media (max-width: 700px) {
+            .modal-content { max-width: 92%; margin-top: 18%; }
+            .modal-nav { font-size: 40px; padding: 8px; }
         }
     </style>
 </head>
@@ -102,9 +129,11 @@
     <footer>
         © <span id="year"></span> Cow Rock Construction. All rights reserved.
     </footer>
-    <div id="imageModal" class="modal">
-        <span class="close">&times;</span>
+    <div id="imageModal" class="modal" role="dialog" aria-modal="true" aria-label="Project photo">
+        <button type="button" class="close" id="modalClose" aria-label="Close">&times;</button>
+        <button type="button" class="modal-nav prev" id="modalPrev" aria-label="Previous photo">&#8249;</button>
         <img class="modal-content" id="modalImage" alt="">
+        <button type="button" class="modal-nav next" id="modalNext" aria-label="Next photo">&#8250;</button>
         <div class="modal-caption" id="modalCaption"></div>
     </div>
     <script>
@@ -117,6 +146,7 @@
                 nav.classList.toggle('active');
                 toggle.setAttribute('aria-expanded', isActive);
             });
+
             const galleryContainer = document.getElementById('photoGallery');
             const modal = document.getElementById('imageModal');
             const modalImg = document.getElementById('modalImage');
@@ -129,6 +159,9 @@
                 'CRC111', 'CRC112', 'CRC113', 'CRC114', 'CRC115',
                 'CRC116'
             ];
+            let currentIndex = 0;
+            let touchStartX = 0;
+
             const setWithFallback = (el, base) => {
                 el.onerror = () => {
                     el.onerror = null;
@@ -136,7 +169,29 @@
                 };
                 el.src = base + '.webp';
             };
-            imageFiles.forEach((base) => {
+
+            const isOpen = () => modal.style.display === 'block';
+
+            const showAt = (index) => {
+                currentIndex = (index + imageFiles.length) % imageFiles.length;
+                const base = imageFiles[currentIndex];
+                setWithFallback(modalImg, base);
+                modalImg.alt = 'Cow Rock Construction project photo';
+                caption.textContent = (currentIndex + 1) + ' / ' + imageFiles.length;
+            };
+
+            const openAt = (index) => {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                showAt(index);
+            };
+
+            const closeModal = () => {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            };
+
+            imageFiles.forEach((base, index) => {
                 const picture = document.createElement('picture');
                 const source = document.createElement('source');
                 source.srcset = base + '.webp';
@@ -146,24 +201,38 @@
                 img.loading = 'lazy';
                 img.decoding = 'async';
                 setWithFallback(img, base);
-                img.addEventListener('click', () => {
-                    modal.style.display = 'block';
-                    caption.textContent = 'Cow Rock Construction';
-                    setWithFallback(modalImg, base);
-                });
+                img.addEventListener('click', () => openAt(index));
                 picture.appendChild(source);
                 picture.appendChild(img);
                 galleryContainer.appendChild(picture);
             });
-            modal.querySelector('.close').addEventListener('click', () => modal.style.display = 'none');
+
+            document.getElementById('modalClose').addEventListener('click', closeModal);
+            document.getElementById('modalPrev').addEventListener('click', (e) => {
+                e.stopPropagation();
+                showAt(currentIndex - 1);
+            });
+            document.getElementById('modalNext').addEventListener('click', (e) => {
+                e.stopPropagation();
+                showAt(currentIndex + 1);
+            });
             modal.addEventListener('click', (e) => {
-                if (e.target === modal) modal.style.display = 'none';
+                if (e.target === modal) closeModal();
             });
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && modal.style.display === 'block') {
-                    modal.style.display = 'none';
-                }
+                if (!isOpen()) return;
+                if (e.key === 'Escape') closeModal();
+                if (e.key === 'ArrowLeft') showAt(currentIndex - 1);
+                if (e.key === 'ArrowRight') showAt(currentIndex + 1);
             });
+            modal.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+            modal.addEventListener('touchend', (e) => {
+                const dx = e.changedTouches[0].screenX - touchStartX;
+                if (dx > 50) showAt(currentIndex - 1);
+                if (dx < -50) showAt(currentIndex + 1);
+            }, { passive: true });
         });
     </script>
 </body>
