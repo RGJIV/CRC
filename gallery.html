@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Private gallery of select projects by Cow Rock Construction in Cashiers, NC. Most clients prefer not to publish projects publicly.">
     <title>Cow Rock Construction - Gallery</title>
+    <link rel="canonical" href="https://www.cowrock.com/gallery.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Cow Rock Construction - Gallery">
+    <meta property="og:description" content="Private gallery of select projects by Cow Rock Construction in Cashiers, NC. Most clients prefer not to publish projects publicly.">
+    <meta property="og:url" content="https://www.cowrock.com/gallery.html">
+    <meta property="og:image" content="https://www.cowrock.com/logo-960.webp">
     <link rel="icon" type="image/png" href="COWROCK_SECONDARY_BLUE_OUTLINE.png">
     <link rel="stylesheet" href="styles.css">
     <style>
@@ -84,7 +90,11 @@
     </nav>
     <main class="container">
         <div class="logo">
-            <img src="COWROCK_PRIMARY_NAVY.png" alt="Cow Rock Construction Logo">
+            <picture>
+                <source srcset="logo-960.webp" type="image/webp">
+                <img src="COWROCK_PRIMARY_NAVY.png" alt="" width="960" height="354" decoding="async">
+            </picture>
+            <h1 class="visually-hidden">Gallery — Cow Rock Construction</h1>
         </div>
         <div class="content">
             <p>Most of our clients prefer not to publish their projects on the Internet. Please make an appointment to visit our projects in person.</p>
@@ -106,10 +116,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Set current year
             document.getElementById('year').textContent = new Date().getFullYear();
 
-            // Mobile menu toggle with ARIA
             const toggle = document.querySelector('#menuToggle');
             const nav = document.querySelector('#navMenu');
 
@@ -119,7 +127,6 @@
                 toggle.setAttribute('aria-expanded', isActive);
             });
 
-            // Dynamic gallery
             const galleryContainer = document.getElementById('photoGallery');
             const imageFiles = [
                 'CRC001.jpg', 'CRC002.jpg', 'CRC003.jpg', 'CRC004.jpg', 'CRC005.jpg',
@@ -149,7 +156,6 @@
                 galleryContainer.appendChild(img);
             });
 
-            // Modal close
             const modal = document.getElementById('imageModal');
             const closeBtn = modal.querySelector('.close');
             closeBtn.addEventListener('click', () => modal.style.display = 'none');
