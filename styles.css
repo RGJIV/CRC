@@ -21,20 +21,10 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-image: image-set(
-        url("ReasonForItAll.webp") type("image/webp"),
-        url("ReasonForItAll.jpg") type("image/jpeg")
-    );
+    background-image: url("ReasonForItAll.jpg");
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
-}
-
-/* Temporary fallback if WebP is not in the repo yet */
-@supports not (background-image: image-set(url('x.webp') type('image/webp'))) {
-    body {
-        background: url('ReasonForItAll.jpg') no-repeat center / cover;
-    }
 }
 
 .container {
@@ -150,6 +140,7 @@ footer {
 .menu-toggle.active span:nth-child(2) {
     opacity: 0;
 }
+
 .menu-toggle.active span:nth-child(3) {
     transform: rotate(-45deg) translate(7px, -7px);
 }
