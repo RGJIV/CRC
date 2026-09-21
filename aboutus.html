@@ -10,7 +10,7 @@
     <meta property="og:title" content="Cow Rock Construction - About Us">
     <meta property="og:description" content="Cow Rock Construction builds ultra-custom homes in the mountains of Cashiers, NC. Led by fifth-generation builder Richard Jennings with degrees from NC State and Georgia Tech.">
     <meta property="og:url" content="https://www.cowrock.com/aboutus.html">
-    <meta property="og:image" content="https://www.cowrock.com/logo-960.webp">
+    <meta property="og:image" content="https://www.cowrock.com/COWROCK_PRIMARY_NAVY.png">
     <link rel="icon" type="image/png" href="COWROCK_SECONDARY_BLUE_OUTLINE.png">
     <link rel="stylesheet" href="styles.css">
     <style>
@@ -37,17 +37,12 @@
     </nav>
     <main class="container">
         <div class="logo">
-            <picture>
-                <source srcset="logo-960.webp" type="image/webp">
-                <img src="COWROCK_PRIMARY_NAVY.png" alt="" width="960" height="354" decoding="async">
-            </picture>
+            <img src="COWROCK_PRIMARY_NAVY.png" alt="" width="960" height="354" decoding="async">
             <h1 class="visually-hidden">About Cow Rock Construction — Richard Jennings, Fifth-Generation Builder</h1>
         </div>
         <div class="content">
             <p>At Cow Rock Construction, we proudly uphold a legacy of excellence under the seasoned leadership of Richard Jennings, a fifth-generation builder renowned for his unparalleled commitment to craftsmanship.</p>
-
             <p>With a BS in Civil Engineering from NC State University, a master’s degree in Structural Engineering from Georgia Tech, and over 25 years of practical experience across the Southeast, Richard earned his Unlimited North Carolina General Contractors License in 2014. His deep technical expertise allows us to solve complex engineering challenges while delivering homes of exceptional quality.</p>
-
             <p>Our team takes pride in crafting bespoke, ultra-custom homes that seamlessly blend exceptional engineering with the highest standards of craftsmanship — creating timeless residences in the mountains of Western North Carolina.</p>
         </div>
         <div class="photo-section">
@@ -60,10 +55,8 @@
     </footer>
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
-
         const toggle = document.querySelector('#menuToggle');
         const nav = document.querySelector('#navMenu');
-
         toggle.addEventListener('click', () => {
             const isActive = toggle.classList.toggle('active');
             nav.classList.toggle('active');

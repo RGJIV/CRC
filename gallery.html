@@ -10,7 +10,7 @@
     <meta property="og:title" content="Cow Rock Construction - Gallery">
     <meta property="og:description" content="Private gallery of select projects by Cow Rock Construction in Cashiers, NC. Most clients prefer not to publish projects publicly.">
     <meta property="og:url" content="https://www.cowrock.com/gallery.html">
-    <meta property="og:image" content="https://www.cowrock.com/logo-960.webp">
+    <meta property="og:image" content="https://www.cowrock.com/COWROCK_PRIMARY_NAVY.png">
     <link rel="icon" type="image/png" href="COWROCK_SECONDARY_BLUE_OUTLINE.png">
     <link rel="stylesheet" href="styles.css">
     <style>
@@ -21,7 +21,6 @@
             margin-block-start: var(--spacing);
             padding-block-end: var(--spacing);
         }
-
         .photo-gallery img {
             width: 100%;
             aspect-ratio: 1 / 1;
@@ -30,14 +29,12 @@
             cursor: pointer;
             border-radius: 4px;
         }
-
         .photo-gallery img:hover {
             transform: scale(1.8);
             z-index: 10;
             position: relative;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
-
         .modal {
             display: none;
             position: fixed;
@@ -49,7 +46,6 @@
             overflow: auto;
             background-color: rgba(0,0,0,0.9);
         }
-
         .modal-content {
             margin: auto;
             display: block;
@@ -57,7 +53,6 @@
             max-height: 90%;
             margin-top: 5%;
         }
-
         .close {
             position: absolute;
             top: 20px;
@@ -67,7 +62,6 @@
             font-weight: bold;
             cursor: pointer;
         }
-
         .modal-caption {
             text-align: center;
             color: #ccc;
@@ -90,43 +84,32 @@
     </nav>
     <main class="container">
         <div class="logo">
-            <picture>
-                <source srcset="logo-960.webp" type="image/webp">
-                <img src="COWROCK_PRIMARY_NAVY.png" alt="" width="960" height="354" decoding="async">
-            </picture>
+            <img src="COWROCK_PRIMARY_NAVY.png" alt="" width="960" height="354" decoding="async">
             <h1 class="visually-hidden">Gallery — Cow Rock Construction</h1>
         </div>
         <div class="content">
             <p>Most of our clients prefer not to publish their projects on the Internet. Please make an appointment to visit our projects in person.</p>
         </div>
-        <div class="photo-gallery" id="photoGallery">
-            <!-- Images populated dynamically via JavaScript -->
-        </div>
+        <div class="photo-gallery" id="photoGallery"></div>
     </main>
     <footer>
         © <span id="year"></span> Cow Rock Construction. All rights reserved.
     </footer>
-
-    <!-- Image Modal -->
     <div id="imageModal" class="modal">
         <span class="close">&times;</span>
         <img class="modal-content" id="modalImage">
         <div class="modal-caption" id="modalCaption"></div>
     </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('year').textContent = new Date().getFullYear();
-
             const toggle = document.querySelector('#menuToggle');
             const nav = document.querySelector('#navMenu');
-
             toggle.addEventListener('click', () => {
                 const isActive = toggle.classList.toggle('active');
                 nav.classList.toggle('active');
                 toggle.setAttribute('aria-expanded', isActive);
             });
-
             const galleryContainer = document.getElementById('photoGallery');
             const imageFiles = [
                 'CRC001.jpg', 'CRC002.jpg', 'CRC003.jpg', 'CRC004.jpg', 'CRC005.jpg',
@@ -136,26 +119,22 @@
                 'CRC111.jpg', 'CRC112.jpg', 'CRC113.jpg', 'CRC114.jpg', 'CRC115.jpg',
                 'CRC116.jpg'
             ];
-
             imageFiles.forEach((file) => {
                 const img = document.createElement('img');
                 img.src = file;
-                img.alt = `Cow Rock Construction project photo ${file.replace('.jpg', '')}`;
+                img.alt = 'Cow Rock Construction project photo ' + file.replace('.jpg', '');
                 img.loading = 'lazy';
-                img.title = `Click to enlarge - ${file}`;
-
+                img.title = 'Click to enlarge - ' + file;
                 img.addEventListener('click', () => {
                     const modal = document.getElementById('imageModal');
                     const modalImg = document.getElementById('modalImage');
                     const caption = document.getElementById('modalCaption');
                     modal.style.display = 'block';
                     modalImg.src = file;
-                    caption.textContent = `Cow Rock Construction - ${file.replace('.jpg', '')}`;
+                    caption.textContent = 'Cow Rock Construction - ' + file.replace('.jpg', '');
                 });
-
                 galleryContainer.appendChild(img);
             });
-
             const modal = document.getElementById('imageModal');
             const closeBtn = modal.querySelector('.close');
             closeBtn.addEventListener('click', () => modal.style.display = 'none');
