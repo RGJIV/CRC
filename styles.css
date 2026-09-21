@@ -21,7 +21,13 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: url('ReasonForItAll.jpg') no-repeat center / cover;
+    background-image: image-set(
+        url("ReasonForItAll.webp") type("image/webp"),
+        url("ReasonForItAll.jpg") type("image/jpeg")
+    );
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .container {
@@ -194,4 +200,16 @@ footer {
 
 .photo-section a {
     font-size: var(--font-size-base);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
