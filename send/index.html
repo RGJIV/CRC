@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Sending to Cow Rock Construction</title>
+<link rel="icon" type="image/png" href="../COWROCK_SECONDARY_BLUE_OUTLINE.png">
+<style>
+/* Relay page for client pages on claude.ai (Richard, Oct 20, 2026). The changes ride in the #fragment, which the
+   browser never sends to GitHub; this page posts them to the Apps Script receiver (cowrock-tools/client-send-relay). */
+:root { --navy: #1a2b3c; --paper: #ffffff; --muted: #5a6670; --rule: #d8dde1; --ok: #2d6a3e; --err: #9b2c1f; --bg: #f4f5f6 }
+* { box-sizing: border-box }
+body { margin: 0; background: var(--bg); color: var(--navy); font: 18px/1.55 "Times New Roman", Times, serif }
+main { max-width: 640px; margin: 0 auto; padding: 40px max(16px, env(safe-area-inset-left, 0px)) 32px max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 22px }
+.logo img { width: 220px; max-width: 70%; height: auto; display: block }
+.card { background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 22px; display: grid; gap: 12px }
+h1 { font-size: 28px; margin: 0; font-weight: normal }
+p { margin: 0 }
+.muted { color: var(--muted); font-size: 16px }
+.ok h1 { color: var(--ok) }
+.err h1 { color: var(--err) }
+ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; font-size: 16px }
+pre { white-space: pre-wrap; font: 15px/1.5 "Times New Roman", Times, serif; background: var(--bg); border: 1px solid var(--rule); border-radius: 6px; padding: 12px; margin: 0; max-height: 40vh; overflow: auto }
+button { font: inherit; font-size: 16px; cursor: pointer; background: var(--navy); color: #fff; border: 0; border-radius: 6px; padding: 10px 18px; justify-self: start }
+button:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px }
+.addr { font-weight: bold; user-select: all }
+footer { font-size: 13px; color: var(--muted); text-align: center }
+</style>
+</head>
+<body>
+<main>
+  <div class="logo"><img src="../COWROCK_PRIMARY_NAVY.png" alt="Cow Rock Construction" width="960" height="354"></div>
+  <section class="card" id="card" aria-live="polite">
+    <h1 id="head">Sending your changes…</h1>
+    <p class="muted" id="sub">One moment.</p>
+  </section>
+  <footer>© <span id="year"></span> Cow Rock Construction, LLC. All rights reserved.</footer>
+</main>
+<script>
+// Apps Script web app URL (Deploy > Manage deployments > Web app URL). Changing the deployment keeps this URL.
+const RELAY = "PASTE_WEB_APP_URL_HERE";
+const ADDRESS = "Claude@CowRock.com";
+const $ = id => document.getElementById(id);
+$("year").textContent = new Date().getFullYear();
+
+function decode(hash){
+  const m = /^#d=([A-Za-z0-9_-]+)$/.exec(hash || "");
+  if (!m) return null;
+  try {
+    const b = atob(m[1].replace(/-/g, "+").replace(/_/g, "/"));
+    const d = JSON.parse(new TextDecoder().decode(Uint8Array.from(b, c => c.charCodeAt(0))));
+    return d && d.v === 1 && Array.isArray(d.items) && d.items.length ? d : null;
+  } catch (e) { return null; }
+}
+function show(kind, head, sub, extra){
+  $("card").className = "card " + kind;
+  $("head").textContent = head;
+  $("sub").textContent = sub;
+  if (extra) $("card").appendChild(extra);
+}
+function asText(d){
+  return d.items.map(it => `- ${it.label}: ${it.change || "(see note)"}${it.note ? "\n  Note: " + it.note : ""}`).join("\n");
+}
+function list(d){
+  const ul = document.createElement("ul");
+  d.items.forEach(it => { const li = document.createElement("li"); li.textContent = `${it.label}: ${it.change || it.note}`; ul.appendChild(li); });
+  return ul;
+}
+function fallback(d, why){
+  const box = document.createElement("div"); box.style.display = "grid"; box.style.gap = "10px";
+  const p = document.createElement("p");
+  p.innerHTML = 'Please copy the message below and email it to <span class="addr"></span>.';
+  p.querySelector(".addr").textContent = ADDRESS;
+  const pre = document.createElement("pre");
+  pre.textContent = `${d.job || "Client page"}: changes from ${d.name || ""}\n\n${asText(d)}`;
+  const btn = document.createElement("button"); btn.type = "button"; btn.textContent = "Copy message";
+  btn.onclick = async () => {
+    try { await navigator.clipboard.writeText(pre.textContent); btn.textContent = "Copied"; }
+    catch (e) { const r = document.createRange(); r.selectNodeContents(pre); const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = "Selected: press Copy"; }
+  };
+  box.append(p, pre, btn);
+  show("err", "Your changes did not go through", why, box);
+}
+
+const data = decode(location.hash);
+if (!data) {
+  show("err", "Nothing to send", "This page sends changes from a Cow Rock client page. Please go back to that page and press Send again.");
+} else {
+  const key = "sent:" + (data.id || "");
+  let already = false; try { already = !!data.id && sessionStorage.getItem(key) === "1"; } catch (e) {}
+  const first = (data.name || "").trim().split(/\s+/)[0];
+  if (already) {
+    show("ok", "Already sent", "Cow Rock has these changes. You can close this tab.", list(data));
+  } else {
+    fetch(RELAY, { method: "POST", body: JSON.stringify(data), redirect: "follow" })
+      .then(r => r.json())
+      .then(res => {
+        if (!res || !res.ok) throw new Error(res && res.error || "failed");
+        try { sessionStorage.setItem(key, "1"); } catch (e) {}
+        const n = data.items.length;
+        show("ok", `Sent. Thank you${first ? ", " + first : ""}.`,
+             `Cow Rock Construction has your ${n} change${n > 1 ? "s" : ""} for ${data.job || "the project"} and will follow up. You can close this tab.`,
+             list(data));
+      })
+      .catch(err => fallback(data, err && err.message === "busy"
+        ? "We are receiving a lot of messages right now."
+        : "Something went wrong on our end. Nothing you did caused it."));
+  }
+}
+</script>
+</body>
+</html>
